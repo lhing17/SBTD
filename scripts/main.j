@@ -1,0 +1,13 @@
+/*
+ * 引入相关库文件
+ */
+#include "lib/DzAPI.j"
+#include "lib/BlizzardAPI.j"
+#include "lib/najitest.j"
+
+/*
+ * 逻辑代码
+ */
+#include "logic/spawn.j"
+
+
