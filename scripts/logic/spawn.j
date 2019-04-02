@@ -85,8 +85,61 @@ function chooseNextNode takes nothing returns nothing
     set nextNode = null
 endfunction
 
+function registerNextChoices takes nothing returns nothing
+    call registerNextNodeChoice(nodes[1], nodes[2], nodes[8], null)
+    call registerNextNodeChoice(nodes[2], nodes[1], nodes[3], nodes[12])
+    call registerNextNodeChoice(nodes[3], nodes[2], nodes[4], null)
+    call registerNextNodeChoice(nodes[4], nodes[3], nodes[5], nodes[15])
+    call registerNextNodeChoice(nodes[5], nodes[4], nodes[6], null)
+    call registerNextNodeChoice(nodes[6], nodes[5], nodes[7], nodes[18])
+    call registerNextNodeChoice(nodes[7], nodes[6], nodes[8], null)
+    call registerNextNodeChoice(nodes[8], nodes[1], nodes[7], nodes[9])
+    call registerNextNodeChoice(nodes[9], nodes[8], nodes[10], nodes[20])
+    call registerNextNodeChoice(nodes[10], nodes[9], nodes[11], null)
+    call registerNextNodeChoice(nodes[11], nodes[10], nodes[12], null)
+    call registerNextNodeChoice(nodes[12], nodes[2], nodes[11], nodes[13])
+    call registerNextNodeChoice(nodes[13], nodes[12], nodes[14], null)
+    call registerNextNodeChoice(nodes[14], nodes[13], nodes[15], null)
+    call registerNextNodeChoice(nodes[15], nodes[4], nodes[14], nodes[16])
+    call registerNextNodeChoice(nodes[16], nodes[15], nodes[17], null)
+    call registerNextNodeChoice(nodes[17], nodes[16], nodes[18], null)
+    call registerNextNodeChoice(nodes[18], nodes[6], nodes[17], nodes[19])
+    call registerNextNodeChoice(nodes[19], nodes[18], nodes[20], null)
+    call registerNextNodeChoice(nodes[20], nodes[9], nodes[19], null)
+    call registerNextNodeChoice(nodes[21], nodes[20], null, null)
+    call registerNextNodeChoice(nodes[22], nodes[11], null, null)
+    call registerNextNodeChoice(nodes[23], nodes[14], null, null)
+    call registerNextNodeChoice(nodes[24], nodes[17], null, null)
+endfunction
+
 function initSpawn takes nothing returns nothing
     local trigger t = null
+
+
+    nodeRects[1] = gg_rct______________001
+    nodeRects[2] = gg_rct______________002
+    nodeRects[3] = gg_rct______________003
+    nodeRects[4] = gg_rct______________004
+    nodeRects[5] = gg_rct______________005
+    nodeRects[6] = gg_rct______________006
+    nodeRects[7] = gg_rct______________007
+    nodeRects[8] = gg_rct______________008
+    nodeRects[9] = gg_rct______________009
+    nodeRects[10] = gg_rct______________010
+    nodeRects[11] = gg_rct______________011
+    nodeRects[12] = gg_rct______________012
+    nodeRects[13] = gg_rct______________013
+    nodeRects[14] = gg_rct______________014
+    nodeRects[15] = gg_rct______________015
+    nodeRects[16] = gg_rct______________016
+    nodeRects[17] = gg_rct______________017
+    nodeRects[18] = gg_rct______________018
+    nodeRects[19] = gg_rct______________019
+    nodeRects[20] = gg_rct______________020
+    nodeRects[21] = gg_rct______________021
+    nodeRects[22] = gg_rct______________022
+    nodeRects[23] = gg_rct______________023
+    nodeRects[24] = gg_rct______________024
     // 为nodes初始化
     local integer i = 1
     loop
@@ -99,6 +152,7 @@ function initSpawn takes nothing returns nothing
     
 
     // 为nodes注册可能的下一个节点
+    call registerNextChoices()
 
     set i = 1
     loop
