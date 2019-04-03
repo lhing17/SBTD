@@ -8,6 +8,7 @@
 /*
  * 逻辑代码
  */
+#include "logic/enemyMove.j"
 #include "logic/spawn.j"
 
 

@@ -2,165 +2,168 @@
  * 刷怪相关逻辑
  ********************/
 globals
-    region array nodes // 怪物移动的节点
-    rect array nodeRects 
-    constant integer NODE = 0xFFEE
-    hashtable YDHT = InitHashtable()
+    /*
+     * 配置常量
+     */
+    constant integer FIRST_WAVE_TIME = 10 // 开始刷怪时间
+    constant integer SPAWN_FREQUENCY = 2 // 刷怪频率（几秒一个怪）
+    constant integer WAVE_TIME = 40 // 每波刷怪时间
+    constant integer WAVE_INTERVAL = 1 // 每波之间间隔的时间
+    constant integer BOSS_WAVE_INTERVAL = 9 // 两个BOSS之间的波数
+
+    integer array mob // 小兵
+    integer array boss
+    leaderboard array boards // 积分板
+    timer mobTimer // 刷兵的计时器
+    timerdialog mobTimerDialog 
+    timer bossTimer // 刷BOSS的计时器
+    timerdialog bossTimerDialog
+    integer wave = 0 // 波数
+    integer array luck // 每个玩家的人品
+    trigger spawnTrigger // 刷怪的触发器
+    group attackerGroup // 进攻怪的单位组
 endglobals
 
-/**
- * 向哈希表中注册下一个可能的节点，最少有一个可能节点，多有三个可能节点，假设哈希表为全局变量
- * @param whichNode 要注册的节点
- * @param choice0 第一个可能节点
- * @param choice1 第二个可能节点
- * @param choice2 第三个可能节点
- */
-function registerNextNodeChoice takes region whichNode, region choice0, region choice1, region choice2 returns nothing
-    call SaveRegionHandle(YDHT, GetHandleId(whichNode), 0, choice0)
-    if choice1 != null then
-        call SaveRegionHandle(YDHT, GetHandleId(whichNode), 1, choice1)
-    endif
-    if choice2 != null then
-        call SaveRegionHandle(YDHT, GetHandleId(whichNode), 2, choice2)
-    endif
+function initMobsAndBosses takes nothing returns nothing
+    set mob[1]='h005'
+    set mob[2]='u000'
+    set mob[3]='h006'
+    set mob[4]='e002'
+    set mob[5]='o004'
+    set mob[6]='u001'
+    set mob[7]='n00H'
+    set mob[8]='h007'
+    set mob[9]='z000'
+    set mob[10]='z001'
+    set mob[11]='u002'
+    set mob[12]='o005'
+    set mob[13]='o006'
+    set mob[14]='e003'
+    set mob[15]='n00J'
+    set mob[16]='u003'
+    set mob[17]='e004'
+    set mob[18]='e005'
+    set mob[19]='u004'
+    set mob[20]='n00K'
+    set mob[21]='e006'
+    set mob[22]='u005'
+    set mob[23]='h008'
+    set mob[24]='h009'
+    set mob[25]='n00L'
+    set mob[26]='n00M'
+    set mob[27]='n00N'
+    set mob[28]='n00O'
+    set mob[29]='n00P'
+    set mob[30]='n00Q'
+    set mob[31]='u006'
+    set mob[32]='o008'
+    set mob[33]='h00A'
+    set mob[34]='e007'
+    set mob[35]='n00S'
+    set mob[36]='u007'
+    set mob[37]='o009'
+    set mob[38]='n00T'
+    set mob[39]='n00U'
+    set mob[40]='n00V'
+    set mob[41]='n00W'
+    set mob[42]='u009'
+    set mob[43]='e008'
+    set mob[44]='u00A'
+    set mob[45]='n00X'
+    set boss[1]='N00I'
+    set boss[2]='O007'
+    set boss[3]='N00R'
+    set boss[4]='U008'
+    set boss[5]='U00B'
 endfunction
 
-/*
- * 从两个区域中随机选择一个
- */
-function getRandomRegion takes region choice0, region choice1 returns region
-    if choice1 == null or GetRandomInt(0, 100) <= 50 then
-        return choice0
+function spawn takes nothing returns nothing
+    set wave = wave + 1
+
+    // 显示BOSS的倒计时
+    if ModuloInteger(wave, BOSS_WAVE_INTERVAL) == 1 then
+        call TimerStart(bossTimer, ( WAVE_TIME + WAVE_INTERVAL ) * BOSS_WAVE_INTERVAL, false, null)
+        call TimerDialogDisplay(bossTimerDialog, true)
     endif
-    return choice1
+    
+    call EnableTrigger(spawnTrigger)
+    call TimerStart(mobTimer, WAVE_TIME + WAVE_INTERVAL, false, null)
+
+    call YDWEPolledWaitNull(WAVE_TIME) //每波时间
+    call DisableTrigger(spawnTrigger)    
 endfunction
 
-/* 
- * 刷怪逻辑中获取下一个区域
- * @param currentNode 当前进入的区域
- * @param previousNode 单位来源的区域
- */
-function chooseNextNodeForRegion takes region currentNode, region previousNode returns region
-    local region choice0 = LoadRegionHandle(YDHT, GetHandleId(currentNode), 0)
-    local region choice1 = LoadRegionHandle(YDHT, GetHandleId(currentNode), 1)
-    local region choice2 = LoadRegionHandle(YDHT, GetHandleId(currentNode), 2)
-    if previousNode == null then
-        return choice0
-    endif
-    if GetHandleId(choice0) == GetHandleId(previousNode) then
-        return getRandomRegion(choice1, choice2)        
-    endif
-    if GetHandleId(choice1) == GetHandleId(previousNode) then
-        return getRandomRegion(choice0, choice2)        
-    endif
-    if choice2 != null and GetHandleId(choice2) == GetHandleId(previousNode) then
-        return getRandomRegion(choice0, choice1)
-    endif
-    return choice0
-endfunction
-
-/**
- * 移动到下一个节点
- */
-function moveToNextNode takes unit whichUnit, region whichNode returns nothing
-    local rect r = LoadRectHandle(YDHT, GetHandleId(whichNode), 0)
-    call IssuePointOrderById(whichUnit, 0xD0012, GetRectCenterX(r), GetRectCenterY(r))
-    set r = null
-endfunction
-
-function isEnemy takes nothing returns boolean
-    return IsUnitEnemy(GetTriggerUnit(), Player(0))
-endfunction
-
-function chooseNextNode takes nothing returns nothing
-    local region currentNode = GetTriggeringRegion()
-    local unit u = GetEnteringUnit()
-    local region previousNode = LoadRegionHandle(YDHT, GetHandleId(u), NODE)
-    local region nextNode = chooseNextNodeForRegion(currentNode, previousNode)
-    call moveToNextNode(u, nextNode)
-    call SaveRegionHandle(YDHT, GetHandleId(u), NODE, currentNode)
-    set currentNode = null
-    set u = null
-    set previousNode = null
-    set nextNode = null
-endfunction
-
-function registerNextChoices takes nothing returns nothing
-    call registerNextNodeChoice(nodes[1], nodes[2], nodes[8], null)
-    call registerNextNodeChoice(nodes[2], nodes[1], nodes[3], nodes[12])
-    call registerNextNodeChoice(nodes[3], nodes[2], nodes[4], null)
-    call registerNextNodeChoice(nodes[4], nodes[3], nodes[5], nodes[15])
-    call registerNextNodeChoice(nodes[5], nodes[4], nodes[6], null)
-    call registerNextNodeChoice(nodes[6], nodes[5], nodes[7], nodes[18])
-    call registerNextNodeChoice(nodes[7], nodes[6], nodes[8], null)
-    call registerNextNodeChoice(nodes[8], nodes[1], nodes[7], nodes[9])
-    call registerNextNodeChoice(nodes[9], nodes[8], nodes[10], nodes[20])
-    call registerNextNodeChoice(nodes[10], nodes[9], nodes[11], null)
-    call registerNextNodeChoice(nodes[11], nodes[10], nodes[12], null)
-    call registerNextNodeChoice(nodes[12], nodes[2], nodes[11], nodes[13])
-    call registerNextNodeChoice(nodes[13], nodes[12], nodes[14], null)
-    call registerNextNodeChoice(nodes[14], nodes[13], nodes[15], null)
-    call registerNextNodeChoice(nodes[15], nodes[4], nodes[14], nodes[16])
-    call registerNextNodeChoice(nodes[16], nodes[15], nodes[17], null)
-    call registerNextNodeChoice(nodes[17], nodes[16], nodes[18], null)
-    call registerNextNodeChoice(nodes[18], nodes[6], nodes[17], nodes[19])
-    call registerNextNodeChoice(nodes[19], nodes[18], nodes[20], null)
-    call registerNextNodeChoice(nodes[20], nodes[9], nodes[19], null)
-    call registerNextNodeChoice(nodes[21], nodes[20], null, null)
-    call registerNextNodeChoice(nodes[22], nodes[11], null, null)
-    call registerNextNodeChoice(nodes[23], nodes[14], null, null)
-    call registerNextNodeChoice(nodes[24], nodes[17], null, null)
+// 实际执行刷兵的动作
+function doSpawn takes nothing returns nothing
+    local location array loc
+    local location array target
+    local integer i= 0
+	set loc[0]=GetRectCenter(gg_rct_spawn1)
+	set loc[1]=GetRectCenter(gg_rct_spawn2)
+	set loc[2]=GetRectCenter(gg_rct_spawn3)
+	set loc[3]=GetRectCenter(gg_rct_spawn4)
+    set target[0]=GetRectCenter(nodeRects[22])
+	set target[1]=GetRectCenter(nodeRects[23])
+	set target[2]=GetRectCenter(nodeRects[24])
+	set target[3]=GetRectCenter(nodeRects[21])
+	set i=0
+	loop
+		exitwhen i > 3
+		if GetPlayerController(Player(i)) == MAP_CONTROL_USER and GetPlayerSlotState(Player(i)) == PLAYER_SLOT_STATE_PLAYING then
+    	    call CreateNUnitsAtLoc(1, mob[wave], Player(5), loc[i], bj_UNIT_FACING)
+            call GroupAddUnit(attackerGroup, bj_lastCreatedUnit)
+    	    //第13波灵魂行者进入地图使用灵肉形态
+    	    if GetUnitTypeId(bj_lastCreatedUnit) == 'o006' then
+    	        call IssueImmediateOrderById(bj_lastCreatedUnit, $D020D)
+    	    endif
+            call IssuePointOrderByIdLoc(bj_lastCreatedUnit, 0xD0012, target[i])
+            call RemoveLocation(target[i])
+            call RemoveLocation(loc[i])
+            set target[i] = null
+    	    set loc[i]=null
+    	endif
+		set i=i + 1
+	endloop
 endfunction
 
 function initSpawn takes nothing returns nothing
-    local trigger t = null
-
-
-    nodeRects[1] = gg_rct______________001
-    nodeRects[2] = gg_rct______________002
-    nodeRects[3] = gg_rct______________003
-    nodeRects[4] = gg_rct______________004
-    nodeRects[5] = gg_rct______________005
-    nodeRects[6] = gg_rct______________006
-    nodeRects[7] = gg_rct______________007
-    nodeRects[8] = gg_rct______________008
-    nodeRects[9] = gg_rct______________009
-    nodeRects[10] = gg_rct______________010
-    nodeRects[11] = gg_rct______________011
-    nodeRects[12] = gg_rct______________012
-    nodeRects[13] = gg_rct______________013
-    nodeRects[14] = gg_rct______________014
-    nodeRects[15] = gg_rct______________015
-    nodeRects[16] = gg_rct______________016
-    nodeRects[17] = gg_rct______________017
-    nodeRects[18] = gg_rct______________018
-    nodeRects[19] = gg_rct______________019
-    nodeRects[20] = gg_rct______________020
-    nodeRects[21] = gg_rct______________021
-    nodeRects[22] = gg_rct______________022
-    nodeRects[23] = gg_rct______________023
-    nodeRects[24] = gg_rct______________024
-    // 为nodes初始化
     local integer i = 1
+    local trigger t = CreateTrigger()
+
+    // 初始化小兵和BOSS
+    call initMobsAndBosses()
+
+    set attackerGroup = CreateGroup()
+
+    // 显示积分板
     loop
-        exitwhen i >= 24
-        set nodes[i] = CreateRegion()
-        call RegionAddRect(nodes[i], nodeRects[i])
-        call SaveRectHandle(YDHT, GetHandleId(nodes[i]), 0, nodeRects[i])
+        exitwhen i > 4
+        set boards[i] =  CreateLeaderboard()
+        call LeaderboardSetLabel(boards[i], "剩余生命点")
+        call PlayerSetLeaderboard(Player(i-1), boards[i])
+        call LeaderboardDisplay(boards[i], true)
+        call LeaderboardAddItemBJ(Player(i-1),  boards[i], "剩余生命点", 100)
         set i = i + 1
     endloop
     
+    // 刷小兵计时器
+    set mobTimer = CreateTimer()
+    call TimerStart(mobTimer, FIRST_WAVE_TIME, false, null) // 开始刷怪
+    set mobTimerDialog = CreateTimerDialogBJ(mobTimer, "下一波进攻")
+    call TimerDialogDisplay(mobTimerDialog, true)
 
-    // 为nodes注册可能的下一个节点
-    call registerNextChoices()
+    // BOSS计时器，仅用于展示
+    set bossTimer = CreateTimer()
+    set bossTimerDialog = CreateTimerDialogBJ(bossTimer, "下一个BOSS剩余：")
 
-    set i = 1
-    loop
-        exitwhen i >= 24
-        call TriggerRegisterEnterRegionSimple(t, nodes[i])
-        set i = i + 1
-    endloop
-    call TriggerAddCondition(t, Condition(function isEnemy))
-    call TriggerAddAction(t, function chooseNextNode)
-    
+    call TriggerRegisterTimerExpireEvent(t, mobTimer)
+    call TriggerAddAction(t, function spawn)
+
+    // 实际执行刷怪的触发器
+    set spawnTrigger = CreateTrigger()
+    call DisableTrigger(spawnTrigger)
+    call TriggerRegisterTimerEventPeriodic(spawnTrigger, SPAWN_FREQUENCY)
+    call TriggerAddAction(spawnTrigger, function doSpawn)
+
+
 endfunction
