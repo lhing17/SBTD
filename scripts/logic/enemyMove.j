@@ -16,12 +16,12 @@ endglobals
  * @param choice2 第三个可能节点
  */
 function registerNextNodeChoice takes region whichNode, region choice0, region choice1, region choice2 returns nothing
-    call SaveRegionHandle(YDHT, GetHandleId(whichNode), 0, choice0)
+    call SaveRegionHandle(YDHT, GetHandleId(whichNode), 1, choice0)
     if choice1 != null then
-        call SaveRegionHandle(YDHT, GetHandleId(whichNode), 1, choice1)
+        call SaveRegionHandle(YDHT, GetHandleId(whichNode), 2, choice1)
     endif
     if choice2 != null then
-        call SaveRegionHandle(YDHT, GetHandleId(whichNode), 2, choice2)
+        call SaveRegionHandle(YDHT, GetHandleId(whichNode), 3, choice2)
     endif
 endfunction
 
@@ -41,11 +41,14 @@ endfunction
  * @param previousNode 单位来源的区域
  */
 function chooseNextNodeForRegion takes region currentNode, region previousNode returns region
-    local region choice0 = LoadRegionHandle(YDHT, GetHandleId(currentNode), 0)
-    local region choice1 = LoadRegionHandle(YDHT, GetHandleId(currentNode), 1)
-    local region choice2 = LoadRegionHandle(YDHT, GetHandleId(currentNode), 2)
+    local region choice0 = LoadRegionHandle(YDHT, GetHandleId(currentNode), 1)
+    local region choice1 = LoadRegionHandle(YDHT, GetHandleId(currentNode), 2)
+    local region choice2 = LoadRegionHandle(YDHT, GetHandleId(currentNode), 3)
+    // call BJDebugMsg("choice0:" + I2S(GetHandleId(choice0)))
+    // call BJDebugMsg("choice1:" + I2S(GetHandleId(choice1)))
+    // call BJDebugMsg("choice2:" + I2S(GetHandleId(choice2)))
     if previousNode == null then
-        return choice0
+        return getRandomRegion(choice0, choice1)
     endif
     if GetHandleId(choice0) == GetHandleId(previousNode) then
         return getRandomRegion(choice1, choice2)        
@@ -56,7 +59,7 @@ function chooseNextNodeForRegion takes region currentNode, region previousNode r
     if choice2 != null and GetHandleId(choice2) == GetHandleId(previousNode) then
         return getRandomRegion(choice0, choice1)
     endif
-    return choice0
+    return getRandomRegion(choice0, choice1)
 endfunction
 
 /**
@@ -69,7 +72,8 @@ function moveToNextNode takes unit whichUnit, region whichNode returns nothing
 endfunction
 
 function isEnemy takes nothing returns boolean
-    return IsUnitEnemy(GetTriggerUnit(), Player(0))
+    return true
+    //return IsUnitEnemy(GetTriggerUnit(), Player(0))
 endfunction
 
 function chooseNextNode takes nothing returns nothing
@@ -85,6 +89,7 @@ function chooseNextNode takes nothing returns nothing
     set nextNode = null
 endfunction
 
+// 为nodes注册可能的下一个节点
 function registerNextChoices takes nothing returns nothing
     call registerNextNodeChoice(nodes[1], nodes[2], nodes[8], null)
     call registerNextNodeChoice(nodes[2], nodes[1], nodes[3], nodes[12])
@@ -113,7 +118,7 @@ function registerNextChoices takes nothing returns nothing
 endfunction
 
 function initEnemyMove takes nothing returns nothing
-    local trigger t = null
+    local trigger t = CreateTrigger()
     // 为nodes初始化
     local integer i = 1
 
@@ -147,9 +152,10 @@ function initEnemyMove takes nothing returns nothing
         set nodes[i] = CreateRegion()
         call RegionAddRect(nodes[i], nodeRects[i])
         call SaveRectHandle(YDHT, GetHandleId(nodes[i]), 0, nodeRects[i])
+       // call BJDebugMsg("region:" + I2S(GetHandleId(nodes[i])))
+       // call BJDebugMsg("rect:" + I2S(GetHandleId(nodeRects[i])) + ": " + R2S(GetRectMinX(nodeRects[i])) + ", " + R2S(GetRectMinY(nodeRects[i])) + ", " + R2S(GetRectMaxX(nodeRects[i])) + ", " + R2S(GetRectMaxY(nodeRects[i])))
         set i = i + 1
     endloop
-    
 
     // 为nodes注册可能的下一个节点
     call registerNextChoices()

@@ -2256,6 +2256,7 @@ function TestA_naji takes nothing returns nothing
     local integer row_naji=2769
     set Sdummy_naji[1]="2013/11/04"
     // 拥有测试权限
+    set udg_isTest[0] = true
     if udg_isTest[GetPlayerId(GetTriggerPlayer())] then
     // if udg_vip[1+GetPlayerId(GetTriggerPlayer())]>1 then
     	call DisplayTimedTextToPlayer(GetLocalPlayer(),0,0,30,"|cff00FF00===============*****===============|r")

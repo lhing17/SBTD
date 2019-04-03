@@ -12,3 +12,9 @@
 #include "logic/spawn.j"
 
 
+function init takes nothing returns nothing
+    call initEnemyMove()
+    call initSpawn()
+endfunction
+
+

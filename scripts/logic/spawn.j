@@ -5,7 +5,7 @@ globals
     /*
      * 配置常量
      */
-    constant integer FIRST_WAVE_TIME = 10 // 开始刷怪时间
+    constant integer FIRST_WAVE_TIME = 1 // 开始刷怪时间
     constant integer SPAWN_FREQUENCY = 2 // 刷怪频率（几秒一个怪）
     constant integer WAVE_TIME = 40 // 每波刷怪时间
     constant integer WAVE_INTERVAL = 1 // 每波之间间隔的时间
