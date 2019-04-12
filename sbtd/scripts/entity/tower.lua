@@ -4,8 +4,8 @@
 --- DateTime: 2019/4/11 19:47
 ---
 
-local jass = require 'jass.common'
 local tower = {}
+et.tower = tower
 
 ---@class tower
 local mt = {}
@@ -17,7 +17,6 @@ mt.handle = 0
 function tower:__tostring()
     return ('%s'):format(self.id)
 end
-
 
 --- 创建塔
 --- @param u j_unit
