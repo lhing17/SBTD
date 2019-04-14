@@ -1427,6 +1427,9 @@ function jass.UnitAddItem(u, it)
     u:add_item(it)
 end
 --native          UnitAddItemById         takes unit whichUnit, integer itemId returns item
+function jass.UnitAddItemById(u, id)
+    -- TODO
+end
 --native          UnitAddItemToSlotById   takes unit whichUnit, integer itemId, integer itemSlot returns boolean
 --native          UnitRemoveItem          takes unit whichUnit, item whichItem returns nothing
 --- @param u j_unit

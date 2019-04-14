@@ -6,3 +6,6 @@ local console = require 'jass.console'
 
 console.write("hello juezhan")
 
+require 'entity.init'
+require 'logic.globals'
+require 'logic.stone'

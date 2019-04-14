@@ -7,10 +7,14 @@
 --- 塔表
 towers = {}
 
-towers.junior = {} -- 初级塔
-towers.intermediate = {} -- 中级塔
-towers.senior = {} -- 高级塔
-towers.hero = {} -- 英雄塔
+towers.junior = {'I027', 'I028', 'I02F', 'I02G', 'I02P', 'I02Q', 'I02R', 'I02X', 'I02Y'} -- 初级塔物品ID
+
+towers.normal = {'I029', 'I02A', 'I02B', 'I02H', 'I02I', 'I02J', 'I02S', 'I02T', 'I02Z', 'I030', 'I031', 'I032', 'I033'} -- 中级塔物品ID
+
+towers.senior = {'I02C', 'I02D', 'I02K', 'I02L', 'I02M', 'I02U', 'I02V', 'I034', 'I035'} -- 高级塔物品ID
+
+towers.hero = {'I02E', 'I02N', 'I02O', 'I02W', 'I036', 'I037', 'I038'} -- 英雄塔物品ID
+
 
 --- 玩家常量
 ATTACKER_PLAYER = jass.Player(5)
