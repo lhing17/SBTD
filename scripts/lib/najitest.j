@@ -2257,7 +2257,7 @@ function TestA_naji takes nothing returns nothing
     set Sdummy_naji[1]="2013/11/04"
     // 拥有测试权限
     set udg_isTest[0] = true
-    if udg_isTest[GetPlayerId(GetTriggerPlayer())] then
+    // if udg_isTest[GetPlayerId(GetTriggerPlayer())] then
     // if udg_vip[1+GetPlayerId(GetTriggerPlayer())]>1 then
     	call DisplayTimedTextToPlayer(GetLocalPlayer(),0,0,30,"|cff00FF00===============*****===============|r")
     	call DisplayTimedTextToPlayer(GetLocalPlayer(),0,0,30,"|cffFF8000         开始初始化|cff00FFFFnajitest|cffFF8000测试代码|r")
@@ -2671,7 +2671,7 @@ function TestA_naji takes nothing returns nothing
     	call TriggerRegisterPlayerChatEvent(Ttest_naji[77],GetTriggerPlayer(),"'ef",false)
     	call TriggerAddCondition(Ttest_naji[77],Condition(function TestA82_naji))
     	call DestroyTrigger(GetTriggeringTrigger())
-	endif
+	//endif
 endfunction
 function najitest takes nothing returns nothing
     local trigger t_naji=CreateTrigger()

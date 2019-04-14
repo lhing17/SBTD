@@ -2,7 +2,7 @@ local jass = require 'jass.common'
 local japi = require 'jass.japi'
 local slk = require 'jass.slk'
 local dbg = require 'jass.debug'
-local player = require 'et.player'
+local player = require 'entity.player'
 local order2id = require 'util.order_id'
 local math = math
 local ignore_flag = false
@@ -1229,7 +1229,7 @@ function unit.init_unit(handle, p)
     if not u then
         return nil
     end
-    if et.lni.unit then
+    if et.lni and et.lni.unit then
         local data = et.lni.unit[u:get_name()]
         if data then
             u.unit_type = data.type
@@ -1275,7 +1275,7 @@ local player_mt = player.__index
 --- @param face number|nil
 --- @return unit
 function player_mt:create_unit(id, where, face)
-    if et.lni.unit then
+    if et.lni and et.lni.unit then
         local data = et.lni.unit[id]
         if data then
             id = data.id
@@ -1304,7 +1304,7 @@ end
 
 function player.__index:create_dummy(id, where, face)
     id = id or self:get_type_id()
-    if et.lni.unit then
+    if et.lni and et.lni.unit then
         local data = et.lni.unit[id]
         if data then
             id = data.id
@@ -1445,7 +1445,7 @@ function mt:add_approach_listener()
     local j_rect = jass.Rect(self:getX() - 256, self:getY() - 256, self:getX() + 256, self:getY() + 256)
     local j_region = jass.CreateRegion()
     jass.RegionAddRect(j_region, j_rect)
-    local j_trg = war3.CreateTrigger(function()
+    local j_trg = base.CreateTrigger(function()
         local approach_unit = jass.GetEnteringUnit()
         self:event_notify('单位-被接近', self, approach_unit)
     end)
@@ -1489,7 +1489,7 @@ function unit.init()
     end)
 
     --捕捉攻击伤害
-    local j_trg = war3.CreateTrigger(function()
+    local j_trg = base.CreateTrigger(function()
         local source = unit.j_unit(jass.GetEventDamageSource())
         local target = unit.j_unit(jass.GetTriggerUnit())
         local damage = jass.GetEventDamage()
@@ -1506,7 +1506,7 @@ function unit.init()
 
     -- 创建幻象
     et.dummy:add_ability 'A01W'
-    local trg = war3.CreateTrigger(function()
+    local trg = base.CreateTrigger(function()
         last_summoned_unit = jass.GetSummonedUnit()
     end)
     for i = 0, 15 do
@@ -1517,7 +1517,7 @@ end
 function unit.register_jass_triggers()
 
     ---- 单位被攻击事件
-    --local j_trg = war3.CreateTrigger(function()
+    --local j_trg = base.CreateTrigger(function()
     --    local source = unit.j_unit(jass.GetAttacker())
     --    local target = unit.j_unit(jass.GetTriggerUnit())
     --    local dmg = source:get '攻击'
@@ -1537,7 +1537,7 @@ function unit.register_jass_triggers()
     --    jass.TriggerRegisterPlayerUnitEvent(j_trg, player[i].handle, jass.EVENT_PLAYER_UNIT_ATTACKED, nil)
     --end
 
-    local j_trg = war3.CreateTrigger(function()
+    local j_trg = base.CreateTrigger(function()
         local source = unit(jass.GetAttacker())
         local target = unit(jass.GetTriggerUnit())
         source:event_notify('单位-攻击', source, target)
@@ -1548,7 +1548,7 @@ function unit.register_jass_triggers()
         jass.TriggerRegisterPlayerUnitEvent(j_trg, player[i].handle, jass.EVENT_PLAYER_UNIT_ATTACKED, nil)
     end
 
-    j_trg = war3.CreateTrigger(function()
+    j_trg = base.CreateTrigger(function()
         local killer = unit(jass.GetKillingUnit())
         local killed = unit(jass.GetTriggerUnit())
         killed:event_notify('单位-死亡', killer, killed)
@@ -1559,7 +1559,7 @@ function unit.register_jass_triggers()
         jass.TriggerRegisterPlayerUnitEvent(j_trg, player[i].handle, jass.EVENT_PLAYER_UNIT_DEATH, nil)
     end
 
-    j_trg = war3.CreateTrigger(function()
+    j_trg = base.CreateTrigger(function()
         local item = et.item:get(jass.GetManipulatedItem())
         local u = unit(jass.GetTriggerUnit())
         u:event_notify('单位-捡起物品', u, item)
@@ -1569,7 +1569,7 @@ function unit.register_jass_triggers()
         jass.TriggerRegisterPlayerUnitEvent(j_trg, player[i].handle, jass.EVENT_PLAYER_UNIT_PICKUP_ITEM, nil)
     end
 
-    j_trg = war3.CreateTrigger(function()
+    j_trg = base.CreateTrigger(function()
         local item = et.item:get(jass.GetManipulatedItem())
         local u = unit(jass.GetTriggerUnit())
         u:event_notify('单位-使用物品', u, item)
@@ -1579,7 +1579,7 @@ function unit.register_jass_triggers()
         jass.TriggerRegisterPlayerUnitEvent(j_trg, player[i].handle, jass.EVENT_PLAYER_UNIT_USE_ITEM, nil)
     end
 
-    j_trg = war3.CreateTrigger(function()
+    j_trg = base.CreateTrigger(function()
         local item = et.item:get(jass.GetManipulatedItem())
         local u = unit(jass.GetTriggerUnit())
         u:event_notify('单位-扔下物品', u, item)
@@ -1589,7 +1589,7 @@ function unit.register_jass_triggers()
         jass.TriggerRegisterPlayerUnitEvent(j_trg, player[i].handle, jass.EVENT_PLAYER_UNIT_DROP_ITEM, nil)
     end
 
-    j_trg = war3.CreateTrigger(function()
+    j_trg = base.CreateTrigger(function()
         local u = unit(jass.GetTriggerUnit())
         local id = jass.GetSpellAbilityId()
         local target = et.unit(jass.GetSpellTargetUnit()) or et.item:get(jass.GetSpellTargetItem()) or et.point(jass.GetSpellTargetX(), jass.GetSpellTargetY())
@@ -1600,7 +1600,7 @@ function unit.register_jass_triggers()
         jass.TriggerRegisterPlayerUnitEvent(j_trg, player[i].handle, jass.EVENT_PLAYER_UNIT_SPELL_EFFECT, nil)
     end
 
-    j_trg = war3.CreateTrigger(function()
+    j_trg = base.CreateTrigger(function()
         local u = unit(jass.GetTriggerUnit())
         local id = jass.GetSpellAbilityId()
         local target = jass.GetSpellTargetUnit() or jass.GetSpellTargetItem() or et.point(jass.GetSpellTargetX(), jass.GetSpellTargetY())
@@ -1615,7 +1615,7 @@ function unit.register_jass_triggers()
 end
 
 function init()
-
+    unit.init()
 end
 
 init()

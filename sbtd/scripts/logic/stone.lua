@@ -6,6 +6,7 @@ local stone = {}
 --- 1. 掉落物品
 --- 2. 福缘减少
 local function registerDropStone()
+    log.debug("登记杀怪掉落武魂石的函数")
     ---@param killer unit
     ---@param killed unit
     et.game:event '单位-死亡'(function(game, killer, killed)
@@ -25,9 +26,11 @@ end
 
 --- 武魂石变为塔的物品
 local function registerStoneToTowerItem()
+    log.debug('登记武魂石变为塔的函数')
     --- @param u unit
     --- @param it item
     et.game:event '单位-使用物品'(function(game, u, it)
+        log.debug(('%s|%s').format(tostring(u), tostring(it)))
         local level_table = {
             I01Z = 'junior',
             I020 = 'normal',
@@ -48,8 +51,5 @@ local function init()
     registerDropStone()
     registerStoneToTowerItem()
 end
-
-init()
-
 init()
 return stone

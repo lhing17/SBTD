@@ -17,7 +17,7 @@ towers.hero = {'I02E', 'I02N', 'I02O', 'I02W', 'I036', 'I037', 'I038'} -- 英雄
 
 
 --- 玩家常量
-ATTACKER_PLAYER = jass.Player(5)
+ATTACKER_PLAYER = et.player[5]
 
 --- 物品等级表
 --- @type table<string, number>
