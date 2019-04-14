@@ -6,7 +6,8 @@ local debug    = debug
 
 base = {}
 --判断是否是发布版本
-base.release = not pcall(require, 'lua.currentpath')
+-- base.release = not pcall(require, 'lua.currentpath')
+base.release = false
 
 base.version = 1.0
 
@@ -30,7 +31,7 @@ runtime.error_handle = function(msg)
 end
 
 --测试版本和发布版本的脚本路径
-if base.release then
+--if base.release then
 	package.path = package.path .. [[;Poi\]] .. base.version .. [[\?.lua;scripts\?.lua]]
-end
+--end
 
