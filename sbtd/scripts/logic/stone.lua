@@ -13,12 +13,12 @@ local function registerDropStone()
         local p = killer:get_owner()
         -- TODO 修改掉落表
         local drop_table = {
-            AAAA = 20,
-            BBBB = 20,
-            CCCC = 20,
-            DDDD = 20
+            I01Z = 20,
+            I020 = 20,
+            I021 = 20,
+            I022 = 20
         }
-        et.item:new(base.string2id(base.getRandomDropFromTable(drop_table), killer:getX(), killer:getY()))
+        et.item:new(base.getRandomDropFromTable(drop_table), killer:getX(), killer:getY())
         p.luck = p.luck - level * 100
         p.luck = p.luck > 0 and p.luck or 0
     end)
@@ -30,8 +30,8 @@ local function registerStoneToTowerItem()
     --- @param u unit
     --- @param it item
     et.game:event '单位-使用物品'(function(game, u, it)
-        log.debug(('%s'):format(tostring(u)))
         log.debug(('%s|%s'):format(tostring(u), tostring(it)))
+        -- 武魂石对应塔的级别
         local level_table = {
             I01Z = 'junior',
             I020 = 'normal',

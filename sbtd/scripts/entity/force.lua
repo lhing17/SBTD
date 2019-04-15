@@ -35,6 +35,6 @@ end
 
 function force.fail()
     for i = 1, et.player.countAlive() do
-        CustomDefeatBJ(et.player(i), "没有能守护住正派武林!")
+        CustomDefeatBJ(et.player[i].handle, "你输了~请重新来过!")
     end
 end

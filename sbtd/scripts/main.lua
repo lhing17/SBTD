@@ -1,5 +1,7 @@
 require 'scripts.utility'
 require 'scripts.native'
+require 'scripts.common'
+require 'scripts.blizzard'
 require 'scripts.runtime'
 
 local console = require 'jass.console'
@@ -13,5 +15,8 @@ require 'util.id'
 require 'util.order_id'
 
 require 'entity.init'
-require 'logic.globals'
-require 'logic.stone'
+require 'logic.init'
+
+
+
+

@@ -13,7 +13,6 @@ globals
 
     integer array mob // 小兵
     integer array boss
-    leaderboard array boards // 积分板
     timer mobTimer // 刷兵的计时器
     timerdialog mobTimerDialog 
     timer bossTimer // 刷BOSS的计时器
@@ -135,17 +134,6 @@ function initSpawn takes nothing returns nothing
 
     set attackerGroup = CreateGroup()
 
-    // 显示积分板
-    loop
-        exitwhen i > 4
-        set boards[i] =  CreateLeaderboard()
-        call LeaderboardSetLabel(boards[i], "剩余生命点")
-        call PlayerSetLeaderboard(Player(i-1), boards[i])
-        call LeaderboardDisplay(boards[i], true)
-        call LeaderboardAddItemBJ(Player(i-1),  boards[i], "剩余生命点", 100)
-        set i = i + 1
-    endloop
-    
     // 刷小兵计时器
     set mobTimer = CreateTimer()
     call TimerStart(mobTimer, FIRST_WAVE_TIME, false, null) // 开始刷怪

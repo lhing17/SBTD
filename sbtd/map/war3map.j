@@ -87,7 +87,6 @@ constant integer BOSS_WAVE_INTERVAL= 9
 
 integer array mob
 integer array boss
-leaderboard array boards
 timer mobTimer
 timerdialog mobTimerDialog
 timer bossTimer
@@ -3659,16 +3658,6 @@ function initSpawn takes nothing returns nothing
     // 初始化小兵和BOSS
     call initMobsAndBosses()
     set attackerGroup=CreateGroup()
-    // 显示积分板
-    loop
-        exitwhen i > 4
-        set boards[i]=CreateLeaderboard()
-        call LeaderboardSetLabel(boards[i], "剩余生命点")
-        call PlayerSetLeaderboard(Player(i - 1), boards[i])
-        call LeaderboardDisplay(boards[i], true)
-        call LeaderboardAddItemBJ(Player(i - 1), boards[i], "剩余生命点", 100)
-        set i=i + 1
-    endloop
     
     // 刷小兵计时器
     set mobTimer=CreateTimer()
