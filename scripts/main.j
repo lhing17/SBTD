@@ -13,6 +13,7 @@
 
 
 function init takes nothing returns nothing
+    call najitest()
     call Cheat("exec-lua:scripts.main")
     call initEnemyMove()
     call initSpawn()

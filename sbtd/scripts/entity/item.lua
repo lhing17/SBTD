@@ -141,18 +141,6 @@ function item:get_remained_hole()
     return self.hole - #self.imbeds
 end
 
---- 镶嵌宝石
---- @param h  hero 镶嵌宝石的英雄
---- @param bonus_type string 宝石奖励类型
-function item:embed(h, bonus_type)
-    table.insert(self.imbeds, bonus_type)
-    local num = 1
-    if h.part_times['锻造师'] then
-        num = num + h.part_times['锻造师'].level
-    end
-    item.bonus_table[bonus_type] = (item.bonus_table[bonus_type] or 0) + num
-end
-
 --- 判断物品是否为装备
 --- @return boolean
 function item:is_equipment()

@@ -30,7 +30,8 @@ local function registerStoneToTowerItem()
     --- @param u unit
     --- @param it item
     et.game:event '单位-使用物品'(function(game, u, it)
-        log.debug(('%s|%s').format(tostring(u), tostring(it)))
+        log.debug(('%s'):format(tostring(u)))
+        log.debug(('%s|%s'):format(tostring(u), tostring(it)))
         local level_table = {
             I01Z = 'junior',
             I020 = 'normal',
@@ -38,7 +39,7 @@ local function registerStoneToTowerItem()
             I022 = 'hero'
         }
         -- 点击对应级别的武魂石变成塔
-        local id = it.get_id()
+        local id = it:get_id()
         if level_table[base.id2string(id)] then
             local tower_list = towers[level_table[base.id2string(id)]]
             local index = jass.GetRandomInt(1, #tower_list)
