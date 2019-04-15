@@ -1,5 +1,6 @@
 et = et or {}
 et.game = {}
+jass = require 'jass.common'
 
 require 'entity.timer'
 require 'entity.point'

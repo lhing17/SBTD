@@ -5,6 +5,7 @@
 ---
 
 boards = {} -- 积分板
+-- TODO 修改为multiboard并将其修改为随时更新
 -- 显示积分板
 for i = 1, 4 do
     boards[i] = CreateLeaderboard()
