@@ -9,6 +9,7 @@ require 'logic.stone'
 require 'logic.fail'
 require 'logic.gift'
 require 'logic.check'
+require 'logic.reputation'
 
 -- 玩家1选择游戏难度
 local function selectDifficulty()

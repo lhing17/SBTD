@@ -17,6 +17,7 @@ require 'util.order_id'
 require 'entity.init'
 require 'logic.init'
 
-
+-- 武功
+require 'kungfu.init'
 
 
