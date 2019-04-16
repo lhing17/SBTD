@@ -7,6 +7,7 @@
 require 'logic.globals'
 require 'logic.stone'
 require 'logic.fail'
+require 'logic.gift'
 
 -- 玩家1选择游戏难度
 local function selectDifficulty()
@@ -16,7 +17,7 @@ local function selectDifficulty()
         ---@param d dialog
         ---@param p player
         et.game:event '对话框-按钮点击'(function(self, b, d, p)
-            log.debug('点击了对话框按钮'..jass.GetHandleId(b))
+            log.debug('点击了对话框按钮' .. jass.GetHandleId(b))
             for i = 1, #GAME_DIFFICULTY_TEXT do
                 if b == d.buttons[GAME_DIFFICULTY_TEXT[i]] then
                     force.send_message(("玩家一选择%s难度"):format(GAME_DIFFICULTY_TEXT[i]))
@@ -31,7 +32,10 @@ end
 local function initWorkers()
     for i = 1, et.player.countAlive() do
         -- TODO 修改工人的ID
-        et.player[i]:create_unit('u00C', GAME_START_POINT[i])
+        local worker = et.player[i]:create_unit('u00C', GAME_START_POINT[i])
+        worker:add_item('I039')
+        -- 设置初始人口
+        et.player[i]:set_food(30)
     end
 end
 

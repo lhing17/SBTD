@@ -93,6 +93,11 @@ function item:get_id()
     return self.id
 end
 
+--- @return string 物品名称
+function item:get_name()
+    return jass.GetObjectName(self.id)
+end
+
 --- 设置物品的种类
 --- @param tp string
 --function item:set_type(tp)

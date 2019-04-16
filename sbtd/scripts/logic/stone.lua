@@ -18,7 +18,9 @@ local function registerDropStone()
             I021 = 20,
             I022 = 20
         }
-        et.item:new(base.getRandomDropFromTable(drop_table), killer:getX(), killer:getY())
+        et.item:new(base.getRandomDropFromTable(drop_table), killed:getX(), killed:getY())
+
+        -- 福缘减少
         p.luck = p.luck - level * 100
         p.luck = p.luck > 0 and p.luck or 0
     end)
