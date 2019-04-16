@@ -13,15 +13,20 @@ local function registerDropStone()
         local p = killer:get_owner()
         -- TODO 修改掉落表
         local drop_table = {
-            I01Z = 20,
-            I020 = 20,
-            I021 = 20,
-            I022 = 20
+            I01Z = 25,
+            I020 = 25,
+            I021 = 25,
+            I022 = 25
         }
-        et.item:new(base.getRandomDropFromTable(drop_table), killed:getX(), killed:getY())
+        if jass.GetRandomInt(0, MAX_LUCK) <= p.luck then
+            local item = et.item:new(base.getRandomDropFromTable(drop_table), killed:getX(), killed:getY())
+            p:send_message('人品爆发，杀怪掉落了物品：' .. item:get_name())
+        else
+            p.luck = p.luck + 1
+        end
 
         -- 福缘减少
-        p.luck = p.luck - level * 100
+        p.luck = p.luck - base.getItemLevel(item) * 100
         p.luck = p.luck > 0 and p.luck or 0
     end)
 end

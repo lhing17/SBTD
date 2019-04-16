@@ -44,6 +44,7 @@ item.data = nil
 --- @param y number 创建位置y
 --- @return item
 function item:new(item_id, x, y)
+    log.debug('创建物品' .. item_id .. ('位置为(%s, %s)'):format(x, y))
     local it = setmetatable({}, self)
     self.__index = self
     it.handle = jass.CreateItem(item_id, x, y)
