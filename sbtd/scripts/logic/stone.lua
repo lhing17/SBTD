@@ -21,13 +21,12 @@ local function registerDropStone()
         if jass.GetRandomInt(0, MAX_LUCK) <= p.luck then
             local item = et.item:new(base.getRandomDropFromTable(drop_table), killed:getX(), killed:getY())
             p:send_message('人品爆发，杀怪掉落了物品：' .. item:get_name())
+            -- 福缘减少
+            p.luck = p.luck - base.getItemLevel(item) * 100
+            p.luck = p.luck > 0 and p.luck or 0
         else
             p.luck = p.luck + 1
         end
-
-        -- 福缘减少
-        p.luck = p.luck - base.getItemLevel(item) * 100
-        p.luck = p.luck > 0 and p.luck or 0
     end)
 end
 

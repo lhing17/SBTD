@@ -8,6 +8,7 @@ require 'logic.globals'
 require 'logic.stone'
 require 'logic.fail'
 require 'logic.gift'
+require 'logic.check'
 
 -- 玩家1选择游戏难度
 local function selectDifficulty()
