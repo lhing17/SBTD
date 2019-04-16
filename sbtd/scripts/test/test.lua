@@ -31,3 +31,6 @@ local drop_table = {
 
 local result = base.getRandomDropFromTable(drop_table)
 print(result)
+
+local i = 0xD026B
+print(i)

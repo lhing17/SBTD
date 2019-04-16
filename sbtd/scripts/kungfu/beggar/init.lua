@@ -8,3 +8,29 @@
 
 --- 丐帮帮规
 --  每100点声望增加所有丐帮武学10%的伤害
+
+--- 太祖棍法
+--- @param source unit 攻击方
+--- @param target unit 受攻击方
+et.game:event '单位-受攻击'(function(self, source, target)
+    local p = source:get_owner()
+    base.triggerPassive({
+        attacker = source,
+        attacked = target,
+        spell_id = 'A02T',
+        shadow_id = 'A02U',
+        order_id = 0xD026B,
+        possibility = p.luck / 50 + 15,
+        mana_cost = 30
+    })
+end)
+
+--- 太祖棍法伤害
+--- @param source unit
+--- @param target unit
+--- @param damage number
+et.game:event '单位-受到伤害'(function(self, source, target, damage)
+    if damage == 0.11 then
+
+    end
+end)

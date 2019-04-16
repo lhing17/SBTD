@@ -631,8 +631,9 @@ end
 
 --技能(War3)
 --添加技能
---	技能id
---	技能等级
+--- @param sid string|number	技能id
+---	@param lv number 技能等级
+--- @return boolean
 function mt:add_ability(sid, lv)
     if not sid then
         return false
@@ -677,6 +678,8 @@ function mt:disable_ability(ability_id)
     self:get_owner():disable_ability(ability_id)
 end
 
+--- @param number|string
+--- @return boolean
 function mt:has_ability(ability_id)
     return self:get_ability_level(ability_id) >= 1
 end
@@ -795,8 +798,9 @@ end
 mt.script_order = false
 
 --发布命令
---	命令
---	[目标]
+--- @param order number|string	命令
+---	@param target nil|unit|point 目标
+--- @return boolean
 function mt:issue_order(order, target)
     local res
     self.script_order = true
