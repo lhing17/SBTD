@@ -4,13 +4,21 @@
 --- DateTime: 2019/4/16 11:16
 ---
 
---- 查看当前属性
+--- 查看类技能
 --- @param u unit
 --- @param id number
 --- @param target unit | item | point
 et.game:event '单位-技能生效' (function (self, u, id, target)
+    local p = u:get_owner()
+    --- 工人的查看属性技能
     if id == base.string2id('A04P') then
-        local p = u:get_owner()
         p:send_message(('当前福缘：%s'):format(p.luck))
     end
+    --- 塔的查看声望技能
+    if id == base.string2id('A04U') then
+        --- @type tower
+        local t = et.tower.all_towers[u]
+        p:send_message(('当前声望值：%s'):format(t.reputation))
+    end
+
 end)

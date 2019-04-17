@@ -32,7 +32,7 @@ function tower.create(u)
     tower.all_towers[t.unit] = t
     if u:is_hero() then
         tower.hero_towers[u:get_owner()] = tower.hero_towers[u:get_owner()] or {}
-        table.insert(tower.hero_towers[u:get_owner()], u)
+        table.insert(tower.hero_towers[u:get_owner()], t)
     end
     return t
 end

@@ -40,7 +40,8 @@ towers.normal = { 'I029', 'I02A', 'I02B', 'I02H', 'I02I', 'I02J', 'I02S', 'I02T'
 
 towers.senior = { 'I02C', 'I02D', 'I02K', 'I02L', 'I02M', 'I02U', 'I02V', 'I034', 'I035' } -- 高级塔物品ID
 
-towers.hero = { 'I02E', 'I02N', 'I02O', 'I02W', 'I036', 'I037', 'I038' } -- 英雄塔物品ID
+-- towers.hero = { 'I02E', 'I02N', 'I02O', 'I02W', 'I036', 'I037', 'I038' } -- 英雄塔物品ID
+towers.hero = { 'I02W' } -- 英雄塔物品ID
 
 -----------------------
 --- 玩家常量

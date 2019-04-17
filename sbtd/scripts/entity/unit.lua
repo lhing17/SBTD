@@ -32,6 +32,10 @@ mt.unit_type = 'unit'
 --- @type j_unit
 mt.handle = 0
 
+--- 马甲单位的创建者
+--- @type unit
+mt.producer = nil
+
 --所有者
 --- @type player
 mt.owner = nil
@@ -1306,7 +1310,11 @@ function player_mt:create_unit(id, where, face)
     return u
 end
 
-function player.__index:create_dummy(id, where, face)
+--- @param id string|number
+--- @param where point
+--- @param face number
+--- @return unit
+function player_mt:create_dummy(id, where, face)
     id = id or self:get_type_id()
     if et.lni and et.lni.unit then
         local data = et.lni.unit[id]
@@ -1314,7 +1322,12 @@ function player.__index:create_dummy(id, where, face)
             id = data.id
         end
     end
-    local j_id = base.string2id(id)
+    local j_id
+    if type(id) == 'string' then
+        j_id = base.string2id(id)
+    else
+        j_id = id
+    end
     local x, y
     if where.type == 'point' then
         x, y = where:get()

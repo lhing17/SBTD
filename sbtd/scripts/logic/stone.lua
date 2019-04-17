@@ -10,6 +10,9 @@ local function registerDropStone()
     ---@param killer unit
     ---@param killed unit
     et.game:event '单位-死亡'(function(game, killer, killed)
+        if not killer then
+            return
+        end
         local p = killer:get_owner()
         -- TODO 修改掉落表
         local drop_table = {
