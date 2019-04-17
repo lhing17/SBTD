@@ -4,4 +4,14 @@
 --- DateTime: 2019/4/16 13:50
 ---
 
+kungfu = {}
+--- 门派奥义加成表
+kungfu.profound = {
+    A04Q = { A02T, }, -- 丐帮帮规
+    A04R = {}, -- 少林奥义
+    A04S = {}, -- 武当精要
+    A04T = {}, -- 峨眉秘功
+}
+
 require 'kungfu.beggar.init'
+

@@ -6,6 +6,7 @@
 
 local tower = {}
 tower.all_towers = {}
+tower.hero_towers = {}
 et.tower = tower
 
 ---@class tower
@@ -29,6 +30,10 @@ function tower.create(u)
     local t = setmetatable({}, tower)
     t.unit = u
     tower.all_towers[t.unit] = t
+    if u:is_hero() then
+        tower.hero_towers[u:get_owner()] = tower.hero_towers[u:get_owner()] or {}
+        table.insert(tower.hero_towers[u:get_owner()], u)
+    end
     return t
 end
 
