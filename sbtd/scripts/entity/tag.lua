@@ -10,6 +10,7 @@ et.tag = tag
 function tag.create(text, point, size, zOffset, r, g, b, transparency, time, speed, angle)
     local last = jass.CreateTextTag()
     local height = size * 0.023 / 10
+    jass.SetTextTagVisibility(last, true)
     jass.SetTextTagText(last, text, height)
     jass.SetTextTagPos(last, point[1], point[2], zOffset)
     jass.SetTextTagColor(last, r / 100 * 255, g / 100 * 255, b / 100 * 255, (100 - transparency) / 100 * 255)

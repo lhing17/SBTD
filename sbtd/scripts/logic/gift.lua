@@ -12,5 +12,6 @@ et.game:event '单位-使用物品'(function(self, u, it)
         -- 完美的武魂石
         local item = u:add_item('I022')
         u:get_owner():send_message('打开新手大礼包，获得金钱+2000，获得物品：' .. item:get_name())
+        u:get_owner():add_gold(2000)
     end
 end)

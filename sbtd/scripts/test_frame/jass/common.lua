@@ -834,6 +834,7 @@ end
 
 --        // Looks up the "name" field for any object (unit, item, ability)
 --constant native GetObjectName               takes integer objectId          returns string
+--- @param objectId number
 function jass.GetObjectName(objectId)
     if not objectId then
         return nil
@@ -1458,7 +1459,7 @@ end
 --- @param it j_item
 --- @param target j_unit|j_item
 function jass.UnitDropItemTarget(u, it, target)
-    log.info('单位'..tostring(u)..'向目标'..tostring(target)..'丢下了物品'..tostring(it))
+    log.info('单位' .. tostring(u) .. '向目标' .. tostring(target) .. '丢下了物品' .. tostring(it))
 end
 
 --native          UnitUseItem             takes unit whichUnit, item whichItem returns boolean

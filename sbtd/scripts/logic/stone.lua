@@ -70,7 +70,9 @@ local function registerGambleStone()
                 I021 = 20,
                 I022 = 10
             }
-            u:add_item(base.getRandomDropFromTable(drop_table))
+            local result = base.getRandomDropFromTable(drop_table)
+            u:get_owner():send_message(('和断指轩辕赌博，得到物品：%s'):format(jass.GetObjectName(result)))
+            u:add_item(result)
         end
     end)
 end
