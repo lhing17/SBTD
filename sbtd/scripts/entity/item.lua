@@ -15,6 +15,7 @@ et.item = item
 item.handle = 0
 
 -- item的id
+--- @type number
 item.id = 0
 
 item.x = 0

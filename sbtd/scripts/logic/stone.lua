@@ -57,9 +57,28 @@ local function registerStoneToTowerItem()
     end)
 end
 
+--- 登记赌博武魂石的事件
+local function registerGambleStone()
+    log.debug('登记赌博武魂石的函数')
+    --- @param u unit 单位
+    ---@param it item 捡起的物品
+    et.game:event '单位-捡起物品'(function(self, u, it)
+        if it:get_id() == base.string2id('I03A') then
+            local drop_table = {
+                I01Z = 40,
+                I020 = 30,
+                I021 = 20,
+                I022 = 10
+            }
+            u:add_item(base.getRandomDropFromTable(drop_table))
+        end
+    end)
+end
+
 local function init()
     registerDropStone()
     registerStoneToTowerItem()
+    registerGambleStone()
 end
 init()
 return stone
