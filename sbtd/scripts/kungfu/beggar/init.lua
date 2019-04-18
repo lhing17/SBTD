@@ -25,7 +25,11 @@ require 'kungfu.beggar.copperHammer'
 require 'kungfu.beggar.crazyWand'
 
 --逍遥游
+require 'kungfu.beggar.happyExcursion'
+
 --丐帮心法
+
+
 --降龙十八掌
 --打狗棒法
 --丐帮身法
