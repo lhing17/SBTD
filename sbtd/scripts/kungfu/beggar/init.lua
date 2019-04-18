@@ -9,14 +9,21 @@
 --- 丐帮帮规
 --  每100点声望增加所有丐帮武学10%的伤害
 
---太祖棍法
+-- 太祖棍法
 require 'kungfu.beggar.taizuStick'
+
+-- 太祖拳法
 require 'kungfu.beggar.taizuFist'
+
+-- 丐帮入门棍法
 require 'kungfu.beggar.newbeeStick'
 
+-- 铜锤手
+require 'kungfu.beggar.copperHammer'
 
---铜锤手
 --疯魔杖法
+require 'kungfu.beggar.crazyWand'
+
 --逍遥游
 --丐帮心法
 --降龙十八掌
