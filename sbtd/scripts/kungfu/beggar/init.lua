@@ -28,9 +28,12 @@ require 'kungfu.beggar.crazyWand'
 require 'kungfu.beggar.happyExcursion'
 
 --丐帮心法
-
+require 'kungfu.beggar.beggarCitta'
 
 --降龙十八掌
+require 'kungfu.beggar.yieldDragon'
+
+
 --打狗棒法
 --丐帮身法
 --莲花掌
