@@ -72,6 +72,8 @@ ITEM_LOOKUP = {
 }
 
 --- 技能与order对照表，用于自动施法
+
+-- FIXME 部分是马甲技能
 ORDER_LOOKUP = {
     A02I = 0xD0080, --太祖长拳
     A02S = 0xD007F, --铜锤手

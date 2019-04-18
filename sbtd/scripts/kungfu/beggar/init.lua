@@ -33,10 +33,30 @@ require 'kungfu.beggar.beggarCitta'
 --降龙十八掌
 require 'kungfu.beggar.yieldDragon'
 
-
 --打狗棒法
+require 'kungfu.beggar.beatDog'
+
 --丐帮身法
+require 'kungfu.beggar.beggarBody'
+
 --莲花掌
+et.game:event '单位-技能生效' (function(self, u, id, target)
+    if id == 'A02M' then
+        local g = et.selector():in_range(u:get_point(), 800):is_enemy(u):get()
+        for _, v in ipairs(g) do
+            base.dummy_issue_order({
+                producer = u,
+                target = v,
+                ability_id = 'A02L',
+                order_id = 0xD0207,
+                ability_level = u:get_ability_level(id)
+            })
+        end
+    end
+end)
+
 --青竹镖
+
+
 --六合刀法
 
