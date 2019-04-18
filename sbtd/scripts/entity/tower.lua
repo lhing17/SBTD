@@ -5,6 +5,8 @@
 ---
 
 local tower = {}
+
+--- @type table<unit, tower>
 tower.all_towers = {}
 tower.hero_towers = {}
 et.tower = tower
@@ -19,6 +21,9 @@ mt.unit = nil
 --- @type number 声望
 mt.reputation = 0
 
+--- @type table 技能列表
+mt.ability_list = {}
+
 function tower:__tostring()
     return ('%s'):format(self.id)
 end
@@ -29,6 +34,7 @@ end
 function tower.create(u)
     local t = setmetatable({}, tower)
     t.unit = u
+    t.ability_list = {}
     tower.all_towers[t.unit] = t
     if u:is_hero() then
         tower.hero_towers[u:get_owner()] = tower.hero_towers[u:get_owner()] or {}

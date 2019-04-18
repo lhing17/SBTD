@@ -9,30 +9,21 @@
 --- 丐帮帮规
 --  每100点声望增加所有丐帮武学10%的伤害
 
---- 太祖棍法
---- @param source unit 攻击方
---- @param target unit 受攻击方
-et.game:event '单位-受攻击'(function(self, source, target)
-    local p = source:get_owner()
-    base.triggerPassive({
-        attacker = source,
-        attacked = target,
-        spell_id = 'A02T',
-        shadow_id = 'A02U',
-        order_id = 0xD026B,
-        possibility = p.luck / 50 + 15,
-        mana_cost = 30
-    })
-end)
+--太祖棍法
+require 'kungfu.beggar.taizuStick'
 
---- 太祖棍法伤害
---- @param source unit
---- @param target unit
---- @param damage number
-et.game:event '单位-受到伤害'(function(self, source, target, damage)
-    if base.float_equal(damage, 0.11) then
-        local real_damage = base.passiveDamageFormula(source, target, 'A02T')
-        base.apply_damage(source, target, real_damage)
-    end
-end)
+--太祖长拳
+
+
+--丐帮入门棍法
+--铜锤手
+--疯魔杖法
+--逍遥游
+--丐帮心法
+--降龙十八掌
+--打狗棒法
+--丐帮身法
+--莲花掌
+--青竹镖
+--六合刀法
 

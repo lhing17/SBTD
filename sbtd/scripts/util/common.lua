@@ -27,6 +27,24 @@ function base.getItemLevel(id)
     return ITEM_LOOKUP[id] or 1
 end
 
+--- 马甲单位施放技能
+--- @param tab {producer unit, target unit, point point, unit_id number|string, ability_id number, ability_level number, order_id number, lifetime number, shown boolean}
+function base.dummy_issue_order(tab)
+    local point = tab.point or tab.target:get_point()
+    local dummy = tab.producer:get_owner():create_dummy(tab.unit_id or 'e009', point)
+    dummy.producer = tab.producer
+    dummy:show(not not shown)
+    if tab.ability_id then
+        dummy:add_ability(tab.ability_id, tab.ability_level or 1)
+    end
+    if tab.order_id then
+        dummy:issue_order(tab.order_id)
+        dummy:issue_order(tab.order_id, tab.target)
+        dummy:issue_order(tab.order_id, point)
+    end
+    dummy:set_lifetime(tab.lifetime or 20)
+end
+
 --- 触发被动技能
 --- @param params {attacker:unit, attacked:unit, spell_id:string, shadow_id:string, order_id:number, possibility:number, mana_cost:number}
 --- @return boolean
@@ -34,14 +52,13 @@ function base.triggerPassive(params)
     if params.attacker:has_ability(params.spell_id) and params.attacker:get_mana() >= params.mana_cost then
         local p = params.attacker:get_owner()
         if jass.GetRandomInt(0, 100) <= params.possibility then
-            local dummy = p:create_dummy('e009', params.attacker)
-            dummy.producer = params.attacker
-            dummy:show(false)
-            dummy:add_ability(params.shadow_id, params.attacker:get_ability_level(params.spell_id))
-            dummy:issue_order(params.order_id)
-            dummy:issue_order(params.order_id, params.attacked)
-            dummy:issue_order(params.order_id, params.attacked:get_point())
-            dummy:set_lifetime(20)
+            base.dummy_issue_order({
+                producer = params.attacker,
+                target = params.attacked,
+                ability_id = params.shadow_id,
+                order_id = params.order_id,
+                ability_level = params.attacker:get_ability_level(params.spell_id)
+            })
             params.attacker:set_mana(params.attacker:get_mana() - params.mana_cost)
             p.luck = p.luck - 5
             return true
@@ -140,4 +157,5 @@ end
 function base.random_int(m, n)
     return jass.GetRandomInt(m, n)
 end
+
 
