@@ -107,12 +107,12 @@ end
 --- @param source unit 造成伤害的单位
 --- @param target unit 受到伤害的单位
 --- @param ability_id string 技能ID
-function base.passiveDamageFormula(source, target, ability_id)
+function base.damageFormula(source, target, ability_id, default_base_damage)
     if source:is_dummy() then
         source = source.producer
     end
     -- 伤害基数
-    local base_damage = 50
+    local base_damage = default_base_damage or 50
     -- 单位等级加成
     local level_addition = source:get_level() / 100 or 0
     -- 技能等级 按功勋升级
@@ -125,7 +125,6 @@ function base.passiveDamageFormula(source, target, ability_id)
             :format(jass.GetObjectName(base.string2id(ability_id)) or '', base_damage or '', level_addition or '', ability_level or '', hero_addition or '', addition or ''))
     local damage = base_damage * ability_level * (1 + level_addition + hero_addition + addition)
     return damage
-
 end
 
 --- @param source unit
@@ -157,5 +156,25 @@ end
 function base.random_int(m, n)
     return jass.GetRandomInt(m, n)
 end
+
+--- 被动技能范围伤害
+--- @param params {attacker unit, attacked unit, spell_id string, range number, damage number, effect string, possibility number, mana_cost number }
+function base.passiveRangeDamage(params)
+    local p = params.attacker:get_owner()
+    if base.random(0, 100) <= params.possibility and params.attacker:get_mana() >= params.mana_cost then
+        params.attacker:set_mana(params.attacker:get_mana() - params.mana_cost)
+        local g = et.selector():in_range(params.attacked:get_point(), params.range):is_enemy(params.attacker):get()
+        for _, u in ipairs(g) do
+            base.apply_damage(params.attacker, u, params.damage)
+            et.effect.add_to_point(params.effect, u:get_point()):destroy()
+        end
+        p.luck = p.luck - 5
+    else
+        p.luck = p.luck + 5
+    end
+end
+
+
+
 
 

@@ -26,7 +26,7 @@ end)
 --- @param damage number
 et.game:event '单位-受到伤害'(function(self, source, target, damage)
     if base.float_equal(damage, 0.11) then
-        local real_damage = base.passiveDamageFormula(source, target, 'A02T')
+        local real_damage = base.damageFormula(source, target, 'A02T')
         base.apply_damage(source, target, real_damage)
     end
 end)

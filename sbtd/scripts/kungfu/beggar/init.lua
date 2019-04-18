@@ -11,11 +11,10 @@
 
 --太祖棍法
 require 'kungfu.beggar.taizuStick'
+require 'kungfu.beggar.taizuFist'
+require 'kungfu.beggar.newbeeStick'
 
---太祖长拳
 
-
---丐帮入门棍法
 --铜锤手
 --疯魔杖法
 --逍遥游
