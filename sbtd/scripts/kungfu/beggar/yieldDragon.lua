@@ -9,7 +9,7 @@
 --- @param id string
 --- @param target unit|item|point|nil
 et.game:event '单位-技能生效'(function(self, u, id, target)
-    if id == 'A02R' then
+    if id == base.string2id('A02R') then
         base.dummy_issue_order({
             producer = u,
             target = target,

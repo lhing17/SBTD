@@ -46,7 +46,7 @@ function base.dummy_issue_order(tab)
 end
 
 --- 触发被动技能
---- @param params {attacker:unit, attacked:unit, spell_id:string, shadow_id:string, order_id:number, possibility:number, mana_cost:number}
+--- @param params {attacker:unit, attacked:unit, spell_id:string, shadow_id:string, order_id:number, possibility:number, mana_cost:number, lifetime:number}
 --- @return boolean
 function base.triggerPassive(params)
     if params.attacker:has_ability(params.spell_id) and params.attacker:get_mana() >= params.mana_cost then
@@ -57,7 +57,8 @@ function base.triggerPassive(params)
                 target = params.attacked,
                 ability_id = params.shadow_id,
                 order_id = params.order_id,
-                ability_level = params.attacker:get_ability_level(params.spell_id)
+                ability_level = params.attacker:get_ability_level(params.spell_id),
+                lifetime = params.lifetime or 20
             })
             params.attacker:set_mana(params.attacker:get_mana() - params.mana_cost)
             p.luck = p.luck - 5

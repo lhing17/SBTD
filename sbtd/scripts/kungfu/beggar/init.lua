@@ -40,23 +40,13 @@ require 'kungfu.beggar.beatDog'
 require 'kungfu.beggar.beggarBody'
 
 --莲花掌
-et.game:event '单位-技能生效' (function(self, u, id, target)
-    if id == 'A02M' then
-        local g = et.selector():in_range(u:get_point(), 800):is_enemy(u):get()
-        for _, v in ipairs(g) do
-            base.dummy_issue_order({
-                producer = u,
-                target = v,
-                ability_id = 'A02L',
-                order_id = 0xD0207,
-                ability_level = u:get_ability_level(id)
-            })
-        end
-    end
-end)
+require 'kungfu.beggar.lotusPalm'
 
---青竹镖
-
+-- 青竹镖
+require 'kungfu.beggar.bambooDarta'
 
 --六合刀法
+require 'kungfu.beggar.markSixKnife'
+
+
 

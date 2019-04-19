@@ -10,7 +10,7 @@
 --- @param id number
 --- @param target unit|item|point
 et.game:event '单位-技能生效'(function(self, u, id, target)
-    if id == 'A031' then
+    if id == base.string2id('A031') then
         if u:is_hero() then
             u:set_mana(u:get_mana() + 50)
         else
