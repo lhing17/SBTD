@@ -76,7 +76,38 @@ function initMobsAndBosses takes nothing returns nothing
     set boss[5]='U00B'
 endfunction
 
+function doSpawnFinalBoss takes nothing returns nothing
+    local location array loc
+    local location array target
+    local integer i= 0
+	set loc[0]=GetRectCenter(gg_rct_spawn1)
+	set loc[1]=GetRectCenter(gg_rct_spawn2)
+	set loc[2]=GetRectCenter(gg_rct_spawn3)
+	set loc[3]=GetRectCenter(gg_rct_spawn4)
+    set target[0]=GetRectCenter(nodeRects[22])
+	set target[1]=GetRectCenter(nodeRects[23])
+	set target[2]=GetRectCenter(nodeRects[24])
+	set target[3]=GetRectCenter(nodeRects[21])
+    loop
+		exitwhen i > 3
+		if GetPlayerController(Player(i)) == MAP_CONTROL_USER and GetPlayerSlotState(Player(i)) == PLAYER_SLOT_STATE_PLAYING then
+    	    call CreateNUnitsAtLoc(1, 'U00B', Player(5), loc[i], bj_UNIT_FACING)
+            call GroupAddUnit(attackerGroup, bj_lastCreatedUnit)
+            call IssuePointOrderByIdLoc(bj_lastCreatedUnit, 0xD0012, target[i])
+            call RemoveLocation(target[i])
+            call RemoveLocation(loc[i])
+            set target[i] = null
+    	    set loc[i]=null
+    	endif
+		set i=i + 1
+	endloop
+endfunction
+
 function spawn takes nothing returns nothing
+    if wave == 0 then
+        call doSpawnFinalBoss()
+    endif
+
     set wave = wave + 1
 
     // 显示BOSS的倒计时
@@ -91,6 +122,8 @@ function spawn takes nothing returns nothing
     call YDWEPolledWaitNull(WAVE_TIME) //每波时间
     call DisableTrigger(spawnTrigger)    
 endfunction
+
+
 
 // 实际执行刷兵的动作
 function doSpawn takes nothing returns nothing

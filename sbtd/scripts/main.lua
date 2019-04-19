@@ -13,10 +13,11 @@ require 'util.common'
 require 'util.api'
 require 'util.id'
 require 'util.order_id'
-require 'util.general_bonus'
-require 'util.general_buff'
 
 require 'entity.init'
+
+require 'util.general_bonus'
+require 'util.general_buff'
 require 'logic.init'
 
 -- 武功

@@ -72,8 +72,7 @@ function moveToNextNode takes unit whichUnit, region whichNode returns nothing
 endfunction
 
 function isEnemy takes nothing returns boolean
-    return true
-    //return IsUnitEnemy(GetTriggerUnit(), Player(0))
+    return IsUnitEnemy(GetTriggerUnit(), Player(0))
 endfunction
 
 function chooseNextNode takes nothing returns nothing
