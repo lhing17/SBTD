@@ -2,18 +2,19 @@ local runtime = require 'jass.runtime'
 local console = require 'jass.console'
 
 local tostring = tostring
-local debug    = debug
+local debug = debug
 
 base = {}
 --判断是否是发布版本
 -- base.release = not pcall(require, 'lua.currentpath')
 base.release = false
 
+--- 游戏版本
 base.version = 1.0
 
 --打开控制台
 if not base.release then
-	console.enable = true
+    console.enable = true
 end
 
 --重载print,自动转换编码
@@ -32,6 +33,6 @@ end
 
 --测试版本和发布版本的脚本路径
 --if base.release then
-	package.path = package.path .. [[;Poi\]] .. base.version .. [[\?.lua;scripts\?.lua]]
+package.path = package.path .. [[;Poi\]] .. base.version .. [[\?.lua;scripts\?.lua]]
 --end
 

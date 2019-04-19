@@ -61,6 +61,10 @@ towers.abilities = {
 
 -- 进攻怪的玩家
 ATTACKER_PLAYER = et.player[6]
+-- 最终进攻怪ID
+FINAL_BOSS_ID = 'U00B'
+-- 游戏评分
+GAME_POINT = 0
 
 --- 物品等级表
 --- @type table<string, number>
@@ -70,7 +74,6 @@ ITEM_LOOKUP = {
     I021 = 3,
     I022 = 4,
 }
-
 --- 技能与order对照表，用于自动施法
 ORDER_LOOKUP = {
     A02I = 0xD0080, -- 太祖长拳

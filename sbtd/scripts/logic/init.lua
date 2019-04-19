@@ -6,6 +6,7 @@
 
 require 'logic.globals'
 require 'logic.stone'
+require 'logic.win'
 require 'logic.fail'
 require 'logic.gift'
 require 'logic.check'
