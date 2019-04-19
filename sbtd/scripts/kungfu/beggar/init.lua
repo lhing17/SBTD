@@ -43,7 +43,7 @@ require 'kungfu.beggar.beggarBody'
 require 'kungfu.beggar.lotusPalm'
 
 -- 青竹镖
-require 'kungfu.beggar.bambooDarta'
+require 'kungfu.beggar.bambooDart'
 
 --六合刀法
 require 'kungfu.beggar.markSixKnife'

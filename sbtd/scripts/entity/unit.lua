@@ -635,8 +635,8 @@ end
 
 --技能(War3)
 --添加技能
---- @param sid string|number	技能id
----	@param lv number 技能等级
+--- @param sid string|number    技能id
+---    @param lv number 技能等级
 --- @return boolean
 function mt:add_ability(sid, lv)
     if not sid then
@@ -802,8 +802,8 @@ end
 mt.script_order = false
 
 --发布命令
---- @param order number|string	命令
----	@param target nil|unit|point 目标
+--- @param order number|string    命令
+---    @param target nil|unit|point 目标
 --- @return boolean
 function mt:issue_order(order, target)
     local res
@@ -1569,7 +1569,9 @@ function unit.register_jass_triggers()
         local killer = unit(jass.GetKillingUnit())
         local killed = unit(jass.GetTriggerUnit())
         killed:event_notify('单位-死亡', killer, killed)
-        killer:event_notify('单位-杀死单位', killer, killed)
+        if killer then
+            killer:event_notify('单位-杀死单位', killer, killed)
+        end
     end)
 
     for i = 1, 16 do

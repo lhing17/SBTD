@@ -31,7 +31,7 @@ end
 --- @param tab {producer unit, target unit, point point, unit_id number|string, ability_id number, ability_level number, order_id number, lifetime number, shown boolean}
 function base.dummy_issue_order(tab)
     local point = tab.point or tab.target:get_point()
-    local dummy = tab.producer:get_owner():create_dummy(tab.unit_id or 'e009', point)
+    local dummy = tab.producer:get_owner():create_dummy(tab.unit_id or 'e009', tab.producer:get_point())
     dummy.producer = tab.producer
     dummy:show(not not shown)
     if tab.ability_id then
@@ -159,19 +159,22 @@ function base.random_int(m, n)
 end
 
 --- 被动技能范围伤害
---- @param params {attacker unit, attacked unit, spell_id string, range number, damage number, effect string, possibility number, mana_cost number }
+--- @param params {attacker unit, attacked unit, spell_id string, range number, effect string, possibility number, mana_cost number }
 function base.passiveRangeDamage(params)
     local p = params.attacker:get_owner()
-    if base.random(0, 100) <= params.possibility and params.attacker:get_mana() >= params.mana_cost then
-        params.attacker:set_mana(params.attacker:get_mana() - params.mana_cost)
-        local g = et.selector():in_range(params.attacked:get_point(), params.range):is_enemy(params.attacker):get()
-        for _, u in ipairs(g) do
-            base.apply_damage(params.attacker, u, params.damage)
-            et.effect.add_to_point(params.effect, u:get_point()):destroy()
+    if params.attacker:has_ability(params.spell_id) then
+        if base.random(0, 100) <= params.possibility and params.attacker:get_mana() >= params.mana_cost then
+            local damage = base.damageFormula(params.attacker, params.attacked, params.spell_id)
+            params.attacker:set_mana(params.attacker:get_mana() - params.mana_cost)
+            local g = et.selector():in_range(params.attacked:get_point(), params.range):is_enemy(params.attacker):get()
+            for _, u in ipairs(g) do
+                base.apply_damage(params.attacker, u, damage)
+                et.effect.add_to_point(params.effect, u:get_point()):destroy()
+            end
+            p.luck = p.luck - 5
+        else
+            p.luck = p.luck + 1
         end
-        p.luck = p.luck - 5
-    else
-        p.luck = p.luck + 5
     end
 end
 

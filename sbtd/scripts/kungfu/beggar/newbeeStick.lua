@@ -5,16 +5,18 @@
 ---
 
 --丐帮入门棍法
-et.game:event '单位-受攻击' (function(self, source, target)
-    local damage = base.damageFormula(source, target, 'A02K')
+--- @param source unit
+--- @param target unit
+et.game:event '单位-受攻击'(function(self, source, target)
+
     base.passiveRangeDamage({
         attacker = source,
         attacked = target,
         spell_id = 'A02K',
         range = 400,
-        damage = damage,
         effect = "Abilities\\Spells\\Undead\\AnimateDead\\AnimateDeadTarget.mdl",
         possibility = source:get_owner().luck / 50 + 18,
         mana_cost = 15
     })
+
 end)
