@@ -9,12 +9,12 @@
 --- @param id string
 --- @param target unit|item|point|nil
 et.game:event '单位-技能生效'(function(self, u, id, target)
-    if id == base.string2id('A02R') then
+    if id == base.string2id('A032') then
         base.dummy_issue_order({
             producer = u,
             target = target,
-            ability_id = 'A032',
-            order_id = ORDER_LOOKUP['A032'],
+            ability_id = 'A033',
+            order_id = ORDER_LOOKUP['A033'],
             ability_level = u:get_ability_level(id)
         })
     end

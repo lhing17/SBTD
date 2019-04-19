@@ -360,7 +360,7 @@
 0xD02B2=summonfactory
 0xD02B6=acidbomb
 
-漏了几个特殊的Order ID: 
+婕忎簡鍑犱釜鐗规畩鐨凮rder ID: 
 
 0xD0002=(smart) 
 0xD0005=(stop) 
