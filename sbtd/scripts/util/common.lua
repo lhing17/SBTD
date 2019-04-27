@@ -122,9 +122,9 @@ function base.damageFormula(source, target, ability_id, default_base_damage)
     local hero_addition = source:is_hero() and 1 or 0
     -- 额外加成（门派秘学、武器、武学搭配）
     local addition = getProfoundAddition(source:get_owner(), ability_id) or 0
-    log.debug(('触发了技能：%s，伤害公式参数为：\n基础伤害：%s\n等级加成：%s\n技能等级：%s\n英雄加成：%s\n额外加成：%s')
-            :format(jass.GetObjectName(base.string2id(ability_id)) or '', base_damage or '', level_addition or '', ability_level or '', hero_addition or '', addition or ''))
     local damage = base_damage * ability_level * (1 + level_addition + hero_addition + addition)
+    log.debug(('触发了技能：%s，伤害公式参数为：\n基础伤害：%s\n等级加成：%s\n技能等级：%s\n英雄加成：%s\n额外加成：%s\n最终伤害：%s')
+            :format(jass.GetObjectName(base.string2id(ability_id)) or '', base_damage or '', level_addition or '', ability_level or '', hero_addition or '', addition or '', damage or ''))
     return damage
 end
 
