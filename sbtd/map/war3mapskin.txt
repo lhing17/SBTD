@@ -1,0 +1,9 @@
+[CustomSkin]
+ChatFont=fonts.ttf
+EscMenuTextFont=fonts.ttf
+InfoPanelTextFont=fonts.ttf
+MasterFont=fonts.ttf
+MessageFont=fonts.ttf
+TextTagFont=fonts.ttf
+[Errors]
+Nolumber=珍稀币不够
